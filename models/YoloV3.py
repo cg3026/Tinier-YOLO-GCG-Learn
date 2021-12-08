@@ -18,6 +18,14 @@ if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))  # add ROOT to PATH
 # ROOT = ROOT.relative_to(Path.cwd())  # relative
 
+from models.common import *
+from models.experimental import *
+from utils.autoanchor import check_anchor_order
+from utils.general import LOGGER, check_version, check_yaml, make_divisible, print_args
+from utils.plots import feature_visualization
+from utils.torch_utils import (copy_attr, fuse_conv_and_bn, initialize_weights, model_info, scale_img, select_device,
+                               time_sync)
+
 
 def parse_model(d, ch):  # model_dict, input_channels(3)
     anchors, nc, gd, gw = d['anchors'], d['nc'], d['depth_multiple'], d['width_multiple']
@@ -69,15 +77,5 @@ def parse_model(d, ch):  # model_dict, input_channels(3)
             ch = []
         ch.append(c2)
     return nn.Sequential(*layers), sorted(save)
-
-
-
-yaml_path = "yolov3-tiny.yaml"
-ch = 3
-
-yaml_file = Path(yaml_path)
-with open(yaml_path, encoding='ascii', errors='ignore') as f:
-    yaml_f = yaml.safe_load(f)
-print(yaml_f.get('anchors'))
 
 
